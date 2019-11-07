@@ -24,7 +24,7 @@
           user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+const followersArray = ['https://api.github.com/users/tetondan', 'https://api.github.com/users/dustinmyers', 'https://api.github.com/users/justsml', 'https://api.github.com/users/luishrd', 'https://api.github.com/users/bigknell'];
 
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
@@ -53,3 +53,71 @@ const followersArray = [];
   luishrd
   bigknell
 */
+
+const cards = document.querySelector('.cards');
+
+// Send a GET request
+axios
+  .get("https://api.github.com/users/PrinceD96")
+  .then(response => {
+    const newUser = userCard(response);
+    cards.appendChild(newUser);
+    followersArray.forEach(follower => {
+
+    })
+    console.log(response);
+    console.log(followersArray);
+  });
+
+// Function that creates the card component
+const userCard = (user) => {
+  // define card components
+  const card = document.createElement('div');
+  const imgSrc = document.createElement('img');
+  const info = document.createElement('div');
+  const name = document.createElement('h3');
+  const username = document.createElement('p');
+  const location = document.createElement('p');
+  const profile = document.createElement('p');
+  const profileURL = document.createElement('a');
+  const followers = document.createElement('p');
+  const following = document.createElement('p');
+  const bio = document.createElement('p');
+
+  // add content
+  imgSrc.src = user.data.avatar_url;
+  name.textContent = user.data.name;
+  username.textContent = user.data.login;
+  location.textContent = `Location: ${user.data.location}`;
+  profile.textContent = `Profile: `;
+  profileURL.textContent = user.data.html_url;
+  profileURL.href = user.data.html_url;
+  profileURL.target = '_blank';
+  followers.textContent = `Followers: ${user.data.followers}`;
+  following.textContent = `Following: ${user.data.following}`;
+  bio.textContent = `Bio: ${user.data.bio}`;
+
+  // set classes
+  card.classList.add('card');
+  info.classList.add('card-info');
+  name.classList.add('name');
+  username.classList.add('username');
+
+  // nest components
+  card.appendChild(imgSrc);
+  card.appendChild(info);
+  info.appendChild(name);
+  info.appendChild(username);
+  info.appendChild(location);
+  info.appendChild(profile);
+  profile.appendChild(profileURL);
+  info.appendChild(followers);
+  info.appendChild(following);
+  info.appendChild(bio);
+
+  return card
+}
+
+
+
+
