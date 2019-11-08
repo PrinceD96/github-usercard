@@ -24,7 +24,7 @@
           user, and adding that card to the DOM.
 */
 
-const followersArray = ['https://api.github.com/users/tetondan', 'https://api.github.com/users/dustinmyers', 'https://api.github.com/users/justsml', 'https://api.github.com/users/luishrd', 'https://api.github.com/users/bigknell'];
+const followersArray = [];
 
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
@@ -58,16 +58,16 @@ const cards = document.querySelector('.cards');
 
 // Send a GET request
 axios
-  .get("https://api.github.com/users/PrinceD96")
+  .get('https:api.github.com/users/PrinceD96')
   .then(response => {
     const newUser = userCard(response);
     cards.appendChild(newUser);
-    followersArray.forEach(follower => {
-
-    })
     console.log(response);
-    console.log(followersArray);
+  })
+  .catch(error => {
+    console.log('Something went wrong =>', error);
   });
+
 
 // Function that creates the card component
 const userCard = (user) => {
@@ -119,5 +119,21 @@ const userCard = (user) => {
 }
 
 
+axios
+  .get('https:api.github.com/users/PrinceD96/followers')
+  .then(response => {
+    response.data.forEach(follower => {
+      axios
+        .get(`https:api.github.com/users/${follower.login}`)
+        .then(response => {
+          const newUser = userCard(response);
+          cards.appendChild(newUser);
+        })
+    })
+    console.log('followers', response);
+  })
+  .catch(error => {
+    console.log('Something went wrong =>', error);
+  });
 
 
